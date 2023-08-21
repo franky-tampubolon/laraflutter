@@ -18,7 +18,12 @@ class UserSeeder extends Seeder
             'name'=>'Admin',
             'email' => 'admin@gmail.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('12345678')
+            'password' => Hash::make('12345678'),
+            'role' => 'admin',
+            'phone' => '6281296135971',
+            'bio' => 'Admin user accounts'
         ]);
+        User::factory(1000)->create();
+
     }
 }

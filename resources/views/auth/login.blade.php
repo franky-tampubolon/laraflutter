@@ -31,7 +31,7 @@
                         autofocus>
                     @error('email')
                     <div class="invalid-feedback">
-                        {{$messages}}
+                        {{$message}}
                     </div>
                     @enderror
                 </div>
@@ -53,11 +53,7 @@
                         name="password"
                         tabindex="2"
                         required>
-                    @error('password')
-                    <div class="invalid-feedback">
-                        {{$messages}}
-                    </div>
-                    @enderror
+
                 </div>
 
                 <div class="form-group">

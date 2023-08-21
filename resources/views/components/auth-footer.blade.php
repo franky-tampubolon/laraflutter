@@ -1,3 +1,3 @@
   <div class="simple-footer">
-      Copyright &copy; FIC 2023
+      Copyright &copy; {{env('APP_NAME') . ' ' . date('Y')}}
   </div>
