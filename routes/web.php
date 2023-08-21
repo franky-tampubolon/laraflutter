@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function(){
-    Route::get('/dashboard', function(){
+    Route::get('/home', function(){
         return view('pages.dashboard', ['type_menu' => 'dashboard']);
     })->name('dashboard');
     Route::get('/profile-edit', function(){
