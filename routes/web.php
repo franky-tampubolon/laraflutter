@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MenuController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
         return view('pages.profile', ['type_menu' => '']);
     })->name('profile.edit');
     Route::resource('user', UserController::class);
+    Route::resource('menu', MenuController::class);
 });
 
 

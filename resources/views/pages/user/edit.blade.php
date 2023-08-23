@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'General Dashboard')
+@section('title', 'Edit Data')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -31,7 +31,7 @@
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" class="form-control @error('name')
                             is-invalid
-                        @enderror" value="{{$user->name}}">
+                        @enderror" value="{{old('name') ?? $user->name}}">
                         @error('name')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -42,7 +42,7 @@
                         <label for="email">Email</label>
                         <input type="email" id="email"  name="email" class="form-control @error('email')
                             is-invalid
-                        @enderror" value="{{$user->email}}">
+                        @enderror" value="{{old('email') ?? $user->email}}">
                         @error('email')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -64,7 +64,7 @@
                         <label for="phone">Phone number</label>
                         <input type="text" id="phone"  name="phone" class="form-control @error('phone')
                             is-invalid
-                        @enderror" value="{{$user->phone}}">
+                        @enderror" value="{{old('phone') ?? $user->phone}}">
                         @error('phone')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -90,7 +90,7 @@
                         <label for="bio">Biografi</label>
                         <textarea name="bio" id="bio" cols="30" class="form-control summernote-simple @error('bio')
                             is-invalid
-                        @enderror" rows="10">{{$user->bio}}</textarea>
+                        @enderror" rows="10">{{old('bio') ?? $user->bio}}</textarea>
                         @error('bio')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -103,7 +103,7 @@
                             <label class="custom-switch">
                                 <input type="radio"
                                     name="email_verified_at"
-                                    value="{{now()}}"
+                                    value="{{$user->email_verified_at ?? now()}}"
                                     class="custom-switch-input"
                                     @if($user->email_verified_at !==NULL) checked @endif>
                                 <span class="custom-switch-indicator"></span>

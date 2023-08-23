@@ -29,37 +29,37 @@
                         </div>
                     </form>
                 </div>
+                <div class="ml-1">
+                    <a href="{{route('menu.create')}}" title="Add Data" class="btn btn-outline-primary">
+                        <i class="fas fa-plus"></i>
+
+                    </a>
+                </div>
             </div>
             <div class="card-body table-responsive">
                 <table id="tabel" class="table table-striped ">
                     <thead>
                         <th>No</th>
                         <th>Name</th>
-                        <th>Email</th>
-                        <th>Status</th>
+                        <th>URL</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        @foreach ($users as $key => $val)
+                        @foreach ($menus as $key => $val)
                             <tr>
-                                <td>{{$users->firstItem()+$key}}</td>
-                                <td>{{$val->name}}</td>
-                                <td>{{$val->email}}</td>
+                                <td>{{$menus->firstItem()+$key}}</td>
+                                <td>{{$val->menu_name}}</td>
                                 <td>
-                                    @if($val->email_verified_at !== NULL)
-                                        <span class="badge badge-success">Verified</span>
-                                    @else
-                                        <span class="badge badge-danger">Unverified</span>
-                                    @endif
+                                    <a href="{{url($val->url)}}" class="btn btn-outline-primary">{{url($val->url)}}</a>
                                 </td>
                                 <td>
-                                    <a href="{{route('user.edit', [$val->id])}}" class="badge badge-success">
+                                    <a href="{{route('menu.edit', [$val->id])}}" class="badge badge-success">
                                     <span>
                                         <i class="fas fa-edit"></i>
                                         Edit
                                     </span>
                                     </a>
-                                    <a href="#" onclick="modal_confirm({{$val->id}})"  class="badge badge-danger">
+                                    <a href="#" onclick="modal_confirm({{route('menu.destroy', $val->id)}}, {{$val->id}})"  class="badge badge-danger">
                                     <span>
                                         <i class="fas fa-trash"></i>
                                         Delete
@@ -74,7 +74,7 @@
                 </table>
             </div>
             <div class="card-footer">
-                {{$users->onEachSide(5)->links()}}
+                {{$menus->onEachSide(5)->links()}}
             </div>
         </div>
     </div>
@@ -94,7 +94,7 @@
     <script src="{{ asset('js/page/index-0.js') }}"></script>
 
     <script>
-        function modal_confirm(id)
+        function modal_confirm(url, id)
         {
             swal({
                 title: 'Are you sure?',
@@ -102,18 +102,17 @@
                 icon: 'warning',
                 buttons: true,
                 dangerMode: true,
-                showLoaderOnConfirm:true,
                 })
                 .then((willDelete) => {
                 if (willDelete) {
-                    hapus(id);
+                    hapus(url, id);
                 } else {
                     swal('Your data is save');
                 }
                 });
         }
 
-        function hapus(id)
+        function hapus(url, id)
         {
             $.ajaxSetup({
                 headers: {
@@ -121,7 +120,7 @@
                 }
             });
             $.ajax({
-             url: "{{url('user')}}"+'/'+id,
+             url: url,
              method:"post",
              data: { 'id':id,
                     '_method': "DELETE"
