@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'General Dashboard')
+@section('title', $title)
 
 @push('style')
     <!-- CSS Libraries -->
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="card-body table-responsive">
-                <table class="table table-striped ">
+                <table id="tabel" class="table table-striped ">
                     <thead>
                         <th>No</th>
                         <th>Name</th>
@@ -59,6 +59,12 @@
                                         Edit
                                     </span>
                                     </a>
+                                    <a href="#" onclick="modal_confirm({{$val->id}})"  class="badge badge-danger">
+                                    <span>
+                                        <i class="fas fa-trash"></i>
+                                        Delete
+                                    </span>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
@@ -82,7 +88,56 @@
     <script src="{{ asset('library/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
     <script src="{{ asset('library/summernote/dist/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('library/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
+    <script src="{{asset('library/sweetalert/dist/sweetalert.min.js')}}"></script>
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/index-0.js') }}"></script>
+
+    <script>
+        function modal_confirm(id)
+        {
+            swal({
+                title: 'Are you sure?',
+                text: 'Once deleted, you will lose this data',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+                })
+                .then((willDelete) => {
+                if (willDelete) {
+                    hapus(id);
+                } else {
+                swal('Your imaginary file is safe!');
+                }
+                });
+        }
+
+        function hapus(id)
+        {
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+                }
+            });
+            $.ajax({
+             url: "{{url('user')}}"+'/'+id,
+             method:"post",
+             data: { 'id':id,
+                    '_method': "DELETE"
+                    },
+             success:function(data){
+                if(data.status){
+                    swal('Success to delete data', {
+                        icon: 'success',
+                    });
+                    location.reload()
+                }else{
+                    swal('Failed to delete data', {
+                        icon: 'failed'
+                    });
+                }
+            }
+          });
+        }
+    </script>
 @endpush

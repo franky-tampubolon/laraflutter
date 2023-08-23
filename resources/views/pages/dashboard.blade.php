@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'General Dashboard')
+@section('title', 'Dashboard')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -12,7 +12,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Dashboard FIC 7 - Franky Tampubolon</h1>
+                <h1>Dashboard - {{env('APP_NAME', 'Franky Tampoe')}}</h1>
             </div>
 
         </section>

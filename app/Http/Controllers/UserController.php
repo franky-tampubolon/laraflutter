@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -52,7 +53,12 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('pages.user.edit', [
+            'user' => $user,
+            'title' => 'Edit Data '.$user->name,
+            'type_menu' => 'user'
+        ]);
     }
 
     /**
@@ -60,7 +66,29 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'password' => 'required|min:8',
+            'phone' => 'nullable|numeric|min:10',
+            'bio' => 'nullable|min:30',
+            'role' => 'required',
+            'email_verified_at' => 'nullable|datetime'
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->phone = $request->phone;
+        $user->bio = $request->bio;
+        if($request->email_verified_at !== ''){
+            $user->email_verified_at = $request->email_verified_at;
+        }else{
+            $user->email_verified_at = NULL;
+        }
+        $user->save();
+        return redirect()->route('user.index');
     }
 
     /**
@@ -68,6 +96,17 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        if($user->delete()){
+            return response()->json([
+                'status'=>true
+            ]);
+        }else{
+            return response()->json([
+                'status'=>false
+            ]);
+        }
+
+        // return redirect()->route('user.index');
     }
 }
